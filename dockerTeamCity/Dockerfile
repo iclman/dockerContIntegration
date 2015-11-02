@@ -20,8 +20,7 @@ RUN wget $TEAMCITY_DOWNLOAD/$TEAMCITY_PACKAGE && \
 COPY server.xml /opt/TeamCity/conf/
 COPY web.xml /opt/TeamCity/conf/
 COPY keystore_tomcat /opt/TeamCity/conf/
-COPY mysql-connector-java-5.1.37-bin.jar /data/teamcity/lib/jdbc/
-VOLUME  ["/data/teamcity"]
+
 RUN useradd -d /home/teamcity -u 1001 -m -s /bin/bash teamcity
 RUN chown teamcity:teamcity -R  /data/teamcity
 RUN chown teamcity:teamcity -R  /opt/TeamCity

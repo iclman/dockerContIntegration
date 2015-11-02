@@ -5,7 +5,7 @@ Access to the server will be via HTTPS on port 8443
 
 ![Diagram] (/dockerJenkins/images/docker-jenkins.jpg)
 
-Instructions
+**Instructions**
 
 1) Clone the current container from Github. 
 

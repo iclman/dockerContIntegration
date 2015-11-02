@@ -5,8 +5,13 @@ The connection to the TeamCity server is done via HTTPS on port 8543. The connec
 
 ![Diagram] (/dockerTeamCity/images/docker-teamcity.jpg)
 
+**Pre-requesites**
 
-Instructions
+* Have git and docker installed on your machine.
+* Have proxy configured if you are behind a proxy
+
+
+**Instructions**
 
 
 1) Clone the MySql docker image from Github. Buil the docker image for MySql5.5 and run the container as "container_mysql".
@@ -34,7 +39,11 @@ The mysql server data are made persistent by mounting /home/iclman/data_mysql on
 
     $ git clone https://github.com/iclman/dockerContIntegration.git
 
-Build the docker image for TeamCity
+If you have your own keystore, replace the file dockerContIntegration/dockerTeamcity/keystore_tomcat by your own keystore.
+Also, replace the password "changeit" in server.xml by the password of your keystore.
+
+Build the docker image for TeamCity. Be aware the building of the image download more than 600 MB of data.
+The process might therefore take some time, depending on the quality of your network.
 
     $ cd dockerContIntegration/dockerTeamcity
     $ docker build -t image_teamcity . 
@@ -44,5 +53,40 @@ Run the docker container "cont_teamcity" and map the port 8543 of the host to th
 
     $ docker run --name cont_teamcity -p 8543:8543 --link container_mysql:mysqlserver -v <path-to-repo>/data_teamcity:/data/teamcity -d -t image_teamcity
 
-The teamcity data are made persistent by mounting <path-to-repo>/data_teamcity on your host on /data/teamcity in the teamcity container. If you want to mount another directory, you must make sure that mysql-connector-java-5.1.37-bin.jar is made available on /data/teamcity/lib/jdbc.
+The teamcity data are made persistent by mounting `<path-to-repo>`/data_teamcity on your host on /data/teamcity in the teamcity container. If you want to mount another directory, you must make sure that mysql-connector-java-5.1.37-bin.jar is made available on /data/teamcity/lib/jdbc.
 
+3) Connect to the Teamcity server using your web browser.
+
+Connect to https://`<your-server>`:8543
+
+You will be prompted with the First Start interface. See below.
+
+![Diagram] (/dockerTeamCity/images/teamcity-first-start.jpg)
+
+
+You will then have to define the database connection. Select "MySQL" and clisk on "Refresh JDBC drivers", as shown below.
+
+![Diagram] (/dockerTeamCity/images/teamcity-database-connection1.jpg)
+
+
+You will then have to define the database host, port along with the database name. All these information are in command you typed when you launched the "docker run" for the teamcity container.
+
+The name of the database host is "mysqlserver", as defined by the "--link" option. The port 3306 is the port exposed by the mysql container. Below is an example of data input :
+
+![Diagram] (/dockerTeamCity/images/teamcity-database-connection2.jpg)
+
+Once you have clicked on "Proceed", Teamcity will start setting up the database.
+
+![Diagram] (/dockerTeamCity/images/teamcity-database-connection3.jpg)
+
+
+Once you have accepted the license agreement, you will be prompted to create a Teamcity administrator account.
+
+![Diagram] (/dockerTeamCity/images/teamcity-create-administrator-account.jpg)
+
+You will then be logged in as the administrator and you will have access to the Teamcity user interface.
+
+
+**Important Note**
+
+This is a proof of concept. I have not attempted to optimize the performance in any way.
