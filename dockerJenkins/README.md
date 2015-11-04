@@ -1,7 +1,10 @@
 # dockerJenkins
 
-Setup of a Docker image of a Jenkins server.
-Port exposed on the Jenkins server via HTTPS is port 8443
+Setup of a Docker image of a Jenkins server. The version of java used is java 7.
+
+Port exposed on the Jenkins server via HTTPS is port 8443.
+The port 50000 on the Azur VM will also need to be opened in order to allow connections from Jenkins slaves.
+
 
 ![Diagram] (/dockerJenkins/images/docker-jenkins.jpg)
 
